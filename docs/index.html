@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI capex stress monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --paper: #e9edf0;
+    --panel: #f6f8f9;
+    --ink: #14202b;
+    --ink-2: #455868;
+    --rule: #c3ccd4;
+    --meter: #56718a;
+    --clear: #2e6a4e;
+    --watch: #8c6200;
+    --stress: #9e3527;
+    --muted: #7a8a98;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0; color: var(--ink);
+    font: 400 16px/1.55 "Public Sans", "Helvetica Neue", Arial, sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  main { max-width: 1040px; margin: 0 auto; padding: 32px 24px 64px; }
+  a { color: var(--ink); text-underline-offset: 3px; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--meter); outline-offset: 3px; }
+
+  .masthead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
+              font-size: 14px; color: var(--ink-2); padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+  .masthead strong { color: var(--ink); font-weight: 600; }
+  .masthead .meta span + span { margin-left: 18px; }
+
+  .verdict { padding: 44px 0 36px; }
+  .verdict h1 { font-weight: 300; font-size: clamp(2.1rem, 5.2vw, 3.6rem); line-height: 1.06;
+                letter-spacing: -0.02em; margin: 0 0 18px; max-width: 18ch; }
+  .verdict p { margin: 0; max-width: 62ch; color: var(--ink-2); font-size: 17px; }
+
+  /* The funding meter: the one bold element */
+  .meter { margin-top: 40px; }
+  .meter-track { position: relative; height: 56px; background: var(--panel); border: 1px solid var(--rule); }
+  .meter-outside { position: absolute; top: 0; bottom: 0; right: 0;
+                   background: repeating-linear-gradient(135deg, transparent 0 7px, rgba(158,53,39,.13) 7px 9px); }
+  .meter-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--meter); }
+  .meter-line { position: absolute; top: -8px; bottom: -8px; width: 2px; background: var(--ink); }
+  .meter-scale { position: relative; height: 22px; font-size: 13px; color: var(--ink-2); }
+  .meter-scale span { position: absolute; top: 6px; transform: translateX(-50%); white-space: nowrap; }
+  .meter-scale span.edge-l { transform: none; }
+  .meter-scale span.edge-r { transform: translateX(-100%); }
+  .meter-scale span .lbl, .meter-scale span b { position: static; transform: none; }
+  .meter-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px;
+                   margin-top: 14px; font-size: 15px; }
+  .meter-caption b { font-weight: 600; }
+
+  section { margin-top: 56px; }
+  h2 { font-size: 20px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.005em; }
+  .sub { color: var(--ink-2); margin: 0 0 18px; font-size: 15px; max-width: 70ch; }
+  .chart-main { background: var(--panel); border: 1px solid var(--rule); padding: 16px 16px 8px; height: 300px; }
+
+  ol.signals { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  ol.signals li { display: grid; grid-template-columns: 44px minmax(0, 1fr) 240px; gap: 4px 20px;
+                  padding: 20px 0 20px 16px; border-bottom: 1px solid var(--rule); position: relative; }
+  ol.signals li::before { content: ""; position: absolute; left: 0; top: 20px; bottom: 20px; width: 4px; background: var(--rule); }
+  ol.signals li.clear::before { background: var(--clear); }
+  ol.signals li.watch::before { background: var(--watch); }
+  ol.signals li.stress::before { background: var(--stress); }
+  ol.signals li.info::before { background: var(--meter); }
+  .rank { font-size: 28px; font-weight: 300; color: var(--muted); line-height: 1; padding-top: 2px; }
+  .sig-name { font-weight: 600; font-size: 17px; }
+  .sig-reads { color: var(--ink-2); font-size: 15px; margin-top: 2px; }
+  .sig-reading { display: flex; align-items: baseline; gap: 12px; margin-top: 10px; }
+  .sig-value { font-size: 26px; font-weight: 300; letter-spacing: -0.01em; }
+  .state { font-size: 14px; font-weight: 600; }
+  .state.clear { color: var(--clear); } .state.watch { color: var(--watch); }
+  .state.stress { color: var(--stress); } .state.info { color: var(--meter); }
+  .state.nodata, .state.untracked { color: var(--muted); }
+  .sig-detail { font-size: 14px; color: var(--ink-2); margin-top: 8px; max-width: 72ch; }
+  .spark { height: 96px; align-self: center; }
+  .sig-table { margin-top: 12px; grid-column: 2 / -1; min-width: 0; }
+  .sig-table table { font-size: 13px; }
+  .sig-table th, .sig-table td { padding: 6px 10px; white-space: nowrap; }
+  .sig-table td.flag { color: var(--stress); font-weight: 600; white-space: normal; min-width: 200px; }
+  .sig-table caption { caption-side: top; text-align: left; font-size: 13px; color: var(--ink-2); padding: 0 0 6px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--panel); border: 1px solid var(--rule); }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-weight: 600; color: var(--ink-2); }
+  tr:last-child td { border-bottom: 0; }
+  .table-wrap { overflow-x: auto; }
+  .empty { color: var(--ink-2); font-size: 15px; }
+
+  details { margin-top: 14px; background: var(--panel); border: 1px solid var(--rule); padding: 10px 14px; }
+  summary { cursor: pointer; font-weight: 600; font-size: 15px; }
+  details pre { white-space: pre-wrap; font-size: 12.5px; line-height: 1.45; margin: 12px 0 4px; color: var(--ink-2); }
+
+  footer { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-2); max-width: 80ch; }
+
+  .banner { padding: 18px 20px; background: var(--panel); border: 1px solid var(--rule); border-left: 4px solid var(--stress); margin-top: 24px; }
+
+  @media (max-width: 760px) {
+    ol.signals li { grid-template-columns: 34px minmax(0, 1fr); }
+    .spark { grid-column: 2; height: 80px; margin-top: 8px; }
+    .rank { font-size: 22px; }
+    .masthead .meta span + span { margin-left: 0; display: block; }
+    .meter-scale .lbl, .meter-scale .half { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<main id="app">
+  <header class="masthead">
+    <strong>AI capex stress monitor</strong>
+    <span class="meta" id="meta">Loading data</span>
+  </header>
+  <div id="content"></div>
+</main>
+
+<script>
+const COLORS = { ink: "#14202b", ink2: "#455868", rule: "#c3ccd4", meter: "#56718a",
+                 clear: "#2e6a4e", watch: "#8c6200", stress: "#9e3527", muted: "#7a8a98" };
+
+const HEADLINES = {
+  normal: "The AI buildout is paying for itself.",
+  elevated: "Funding pressure is building.",
+  stress: "Capex is outrunning cash flow, and debt is filling the gap.",
+  incomplete: "Not enough filed quarters to judge funding yet."
+};
+
+const STATE_WORD = { clear: "Clear", watch: "Watch", stress: "Stress", info: "Context",
+                     nodata: "No data", untracked: "Not tracked" };
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function explain(d) {
+  const s = Object.fromEntries(d.signals.map(x => [x.key, x.state]));
+  const secondary = d.signals.filter(x => x.rank > 3 && (x.state === "watch" || x.state === "stress")).length;
+  const tail = secondary ? ` ${secondary} secondary signal${secondary > 1 ? "s are" : " is"} on watch.` : " Secondary signals are quiet.";
+  switch (d.status) {
+    case "normal":
+      return "Core hyperscalers are funding capex from operating cash flow, and new debt is not carrying the load." + tail;
+    case "elevated":
+      return "At least two of the three funding signals are on watch or worse. Stress is confirmed only when capex exceeds operating cash flow and new debt covers the gap." + tail;
+    case "stress":
+      return "Capex exceeds operating cash flow and borrowing is covering the difference. That is the funding pattern of the 2001–02 telecom overbuild." + tail;
+    default:
+      return "Fewer than four aligned quarters of core filings are available. Open the run log under data checks to see which company or concept is missing.";
+  }
+}
+
+function meter(d) {
+  const r = (d.history || []).at(-1);
+  if (!r || r.capex_ocf == null) return "";
+  const max = 1.5, v = Math.max(0, Math.min(r.capex_ocf, max));
+  const pos = x => (x / max * 100).toFixed(2) + "%";
+  const stateColor = r.capex_ocf >= 1 ? COLORS.stress : r.capex_ocf >= 0.85 ? COLORS.watch : COLORS.meter;
+  const bil = x => "$" + (x / 1e9).toFixed(0) + "B";
+  return `
+  <div class="meter" role="img" aria-label="Capex is ${Math.round(r.capex_ocf * 100)} percent of operating cash flow; 100 percent is the self-funded limit">
+    <div class="meter-track">
+      <div class="meter-outside" style="left:${pos(1)}"></div>
+      <div class="meter-fill" style="width:${pos(v)};background:${stateColor}"></div>
+      <div class="meter-line" style="left:calc(${pos(1)} - 1px)"></div>
+    </div>
+    <div class="meter-scale">
+      <span class="edge-l" style="left:0">0%</span>
+      <span class="half" style="left:${pos(0.5)}">50%</span>
+      <span style="left:${pos(1)}"><b>100%</b><span class="lbl"> self-funded limit</span></span>
+      <span class="edge-r" style="left:100%">150%</span>
+    </div>
+    <div class="meter-caption">
+      <span>Capex is <b>${Math.round(r.capex_ocf * 100)}%</b> of operating cash flow (${bil(r.capex_ttm)} of ${bil(r.ocf_ttm)}, 12 months to ${esc(r.q)})</span>
+      <span>Past the line: outside money</span>
+    </div>
+  </div>`;
+}
+
+function fmtTick(fmt, v) {
+  if (v == null) return "";
+  if (fmt === "pct" || fmt === "pts") return Math.round(v * 100) + (fmt === "pts" ? "" : "%");
+  if (fmt === "x") return v.toFixed(1) + "x";
+  return Math.round(v);
+}
+
+if (typeof Chart !== "undefined") {
+  Chart.defaults.font.family = '"Public Sans", "Helvetica Neue", Arial, sans-serif';
+}
+
+function lineChart(canvas, labels, datasets, fmt, compact) {
+  if (typeof Chart === "undefined" || !canvas) return null;  // charts are optional; the readings still render
+  return new Chart(canvas, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: {
+        legend: { display: !compact, position: "bottom", labels: { color: COLORS.ink2, boxWidth: 14, font: { family: "Public Sans" } } },
+        tooltip: { callbacks: { label: c => `${c.dataset.label}: ${fmtTick(fmt, c.parsed.y)}${fmt === "pts" ? " pts" : ""}` } }
+      },
+      scales: {
+        x: { display: !compact, grid: { display: false }, ticks: { color: COLORS.ink2, maxRotation: 0, autoSkipPadding: 16, font: { family: "Public Sans" } } },
+        y: { grid: { color: "rgba(195,204,212,.55)" }, border: { display: false },
+             ticks: { color: COLORS.ink2, maxTicksLimit: compact ? 3 : 6, callback: v => fmtTick(fmt, v), font: { family: "Public Sans", size: compact ? 11 : 12 } } }
+      },
+      elements: { point: { radius: 0, hitRadius: 8 }, line: { borderWidth: 2, tension: 0.2 } }
+    }
+  });
+}
+
+function tableHtml(t) {
+  const flagCol = t.columns.indexOf("Check");
+  return `<details class="sig-table"><summary>By company</summary><div class="table-wrap"><table>
+    <caption>${esc(t.caption)}</caption>
+    <thead><tr>${t.columns.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead>
+    <tbody>${t.rows.map(r => `<tr>${r.map((v, i) =>
+      `<td${i === flagCol && !["Consistent", "Not enough quarters"].includes(v) ? ' class="flag"' : ""}>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody>
+  </table></div></details>`;
+}
+
+function render(d) {
+  const updated = new Date(d.generated_utc);
+  document.getElementById("meta").innerHTML =
+    `<span>Updated ${updated.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}</span>` +
+    `<span>Filings through ${esc(d.latest_quarter || "n/a")}</span>`;
+
+  const signals = d.signals.map(s => `
+    <li class="${esc(s.state)}">
+      <div class="rank" aria-hidden="true">${s.rank}</div>
+      <div>
+        <div class="sig-name">${esc(s.name)}</div>
+        <div class="sig-reads">${esc(s.reads)}</div>
+        <div class="sig-reading">
+          <span class="sig-value">${esc(s.reading_text)}</span>
+          <span class="state ${esc(s.state)}">${STATE_WORD[s.state] || esc(s.state)}</span>
+        </div>
+        <div class="sig-detail">${esc(s.detail)}</div>
+      </div>
+      <div class="spark">${s.chart ? `<canvas id="spark-${esc(s.key)}" aria-label="${esc(s.name)} history"></canvas>` : ""}</div>
+      ${s.table ? tableHtml(s.table) : ""}
+    </li>`).join("");
+
+  const alerts = (d.alerts || []).slice(0, 25);
+  const alertsHtml = alerts.length ? `
+    <div class="table-wrap"><table>
+      <thead><tr><th>Company</th><th>Form</th><th>Filed</th><th>Filing</th></tr></thead>
+      <tbody>${alerts.map(a => `<tr><td>${esc(a.ticker)}</td><td>${esc(a.form)}</td><td>${esc(a.filed)}</td>
+        <td><a href="${esc(a.url)}" target="_blank" rel="noopener">Open filing</a></td></tr>`).join("")}</tbody>
+    </table></div>` : `<p class="empty">No filings matched the useful-life searches in the lookback window.</p>`;
+
+  const fresh = Object.entries(d.freshness || {});
+  const checks = `
+    <div class="table-wrap"><table>
+      <thead><tr><th>Company</th><th>Latest filed quarter</th><th>This run</th></tr></thead>
+      <tbody>${fresh.map(([t, q]) => `<tr><td>${esc(t)}</td><td>${esc(q || "none")}</td>
+        <td>${(d.failures || []).includes(t) ? "Fetch failed, showing last published values" : "Fetched"}</td></tr>`).join("")}</tbody>
+    </table></div>
+    <details><summary>Restatements held back (${(d.restatements || []).length})</summary>
+      <pre>${(d.restatements || []).length ? esc(d.restatements.map(r => `${r.series} ${r.quarter}: published ${r.published}, latest filing ${r.latest_filing}${r.applied ? " (applied)" : ""}`).join("\n")) : "None. Every published quarter matches the latest filings."}</pre></details>
+    <details><summary>Reconciliation issues (${(d.reconciliation || []).length})</summary>
+      <pre>${(d.reconciliation || []).length ? esc(d.reconciliation.map(r => JSON.stringify(r)).join("\n")) : "None. Every derived quarter matches its directly reported value within 1%."}</pre></details>
+    <details><summary>XBRL concepts used</summary><pre>${esc(JSON.stringify(d.concepts_used || {}, null, 1))}</pre></details>
+    <details id="logbox"><summary>Run log</summary><pre id="runlog">Open to load.</pre></details>`;
+
+  document.getElementById("content").innerHTML = `
+    <section class="verdict" style="margin-top:0">
+      <h1>${esc(HEADLINES[d.status] || HEADLINES.incomplete)}</h1>
+      <p>${esc(explain(d))}</p>
+      ${meter(d)}
+    </section>
+
+    <section>
+      <h2>Funding over the last four years</h2>
+      <p class="sub">Capex as a share of operating cash flow, with and without shareholder payouts, and new debt as a share of capex. Core hyperscalers, trailing 12 months.</p>
+      <div class="chart-main"><canvas id="main-chart" aria-label="Funding history chart"></canvas></div>
+    </section>
+
+    <section>
+      <h2>Signals, ranked by how directly they reveal stress</h2>
+      <p class="sub">Stress is confirmed when signals 1 and 3 both breach. Thresholds are judgment calls; there is no history long enough to validate them.</p>
+      <ol class="signals">${signals}</ol>
+    </section>
+
+    <section>
+      <h2>Filings to read</h2>
+      <p class="sub">Disclosures that mention a change in estimated useful lives. A match is a prompt to read, not a verdict.</p>
+      ${alertsHtml}
+    </section>
+
+    <section>
+      <h2>Data checks</h2>
+      <p class="sub">Published quarters are immutable. A later filing with a different number is listed here instead of silently replacing it.</p>
+      ${checks}
+    </section>
+
+    <footer>Discretionary context only. Nothing on this page feeds the fragility gate or any trading decision. Sources: SEC EDGAR XBRL filings, Yahoo Finance prices. Figures are derived from company filings and may differ from reported non-GAAP measures.</footer>`;
+
+  const h = d.history || [];
+  if (h.length) {
+    lineChart(document.getElementById("main-chart"), h.map(r => r.q), [
+      { label: "Capex ÷ operating cash flow", data: h.map(r => r.capex_ocf), borderColor: COLORS.meter },
+      { label: "Capex + buybacks + dividends ÷ operating cash flow", data: h.map(r => r.capex_payout_ocf ?? null), borderColor: COLORS.ink2, borderDash: [2, 3] },
+      { label: "New debt ÷ capex", data: h.map(r => r.debt_share), borderColor: COLORS.watch },
+      { label: "Self-funded limit", data: h.map(() => 1), borderColor: COLORS.stress, borderDash: [5, 4], borderWidth: 1.5 }
+    ], "pct", false);
+  }
+  for (const s of d.signals) {
+    if (!s.chart) continue;
+    const el = document.getElementById("spark-" + s.key);
+    const ds = [{ label: s.name, data: s.chart.values, borderColor: COLORS[s.state] || COLORS.meter }];
+    if (s.threshold != null) ds.push({ label: "Threshold", data: s.chart.values.map(() => s.threshold), borderColor: COLORS.muted, borderDash: [4, 4], borderWidth: 1 });
+    lineChart(el, s.chart.labels, ds, s.fmt === "index" ? "raw" : s.fmt, true);
+  }
+
+  document.getElementById("logbox").addEventListener("toggle", async e => {
+    if (!e.target.open) return;
+    try {
+      const r = await fetch("run_log.txt", { cache: "no-store" });
+      document.getElementById("runlog").textContent = r.ok ? await r.text() : "Run log not found.";
+    } catch { document.getElementById("runlog").textContent = "Run log could not be loaded."; }
+  }, { once: true });
+}
+
+(async () => {
+  let data = null;
+  try {
+    const r = await fetch("data.json", { cache: "no-store" });
+    if (r.ok) data = await r.json();
+  } catch { data = null; }
+  if (data) {
+    try { render(data); }
+    catch (err) {
+      document.getElementById("content").innerHTML = `<div class="banner"><strong>The page could not display this data.</strong>
+        ${esc(err.message)}. The data file loaded, so check the browser console and the run log.</div>`;
+    }
+  } else {
+    document.getElementById("meta").textContent = "No data yet";
+    document.getElementById("content").innerHTML = `
+      <section class="verdict" style="margin-top:0">
+        <h1>No data published yet.</h1>
+        <p>Run the pipeline from the Actions tab: choose Update monitor, then Run workflow. The first run takes a few minutes. If it fails, the run log in the workflow output says which step and why.</p>
+      </section>`;
+  }
+})();
+</script>
+</body>
+</html>
