@@ -1,0 +1,4 @@
+requests>=2.31
+pandas>=2.1
+yfinance>=0.2.54
+pytest>=8.0
