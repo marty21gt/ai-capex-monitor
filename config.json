@@ -1,0 +1,72 @@
+{
+  "sec_user_agent_env": "SEC_USER_AGENT",
+  "min_year": 2020,
+  "accept_restatements": false,
+
+  "core": ["MSFT", "GOOGL", "AMZN", "META"],
+  "canary": ["ORCL", "CRWV"],
+  "supplier": ["NVDA"],
+
+  "companies": {
+    "MSFT":  {"cik": 789019,  "name_contains": "microsoft", "segment_members": ["IntelligentCloudMember"]},
+    "GOOGL": {"cik": 1652044, "name_contains": "alphabet",  "segment_members": ["GoogleCloudMember"]},
+    "AMZN":  {"cik": 1018724, "name_contains": "amazon",    "segment_members": ["AmazonWebServicesSegmentMember", "AmazonWebServicesMember", "AWSMember"]},
+    "META":  {"cik": 1326801, "name_contains": "meta",      "segment_members": []},
+    "ORCL":  {"cik": 1341439, "name_contains": "oracle",    "segment_members": []},
+    "CRWV":  {"cik": 1769628, "name_contains": "coreweave", "segment_members": []},
+    "NVDA":  {"cik": 1045810, "name_contains": "nvidia",    "segment_members": ["DataCenterMember"]}
+  },
+
+  "concepts": {
+    "duration": {
+      "revenue": ["RevenueFromContractWithCustomerExcludingAssessedTax", "Revenues", "SalesRevenueNet"],
+      "ocf": ["NetCashProvidedByUsedInOperatingActivities", "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"],
+      "capex": ["PaymentsToAcquirePropertyPlantAndEquipment", "PaymentsToAcquireProductiveAssets"],
+      "finance_lease_principal": ["FinanceLeasePrincipalPayments"],
+      "dna": ["DepreciationDepletionAndAmortization", "DepreciationAmortizationAndAccretionNet", "DepreciationAndAmortization", "Depreciation"],
+      "cogs": ["CostOfRevenue", "CostOfGoodsAndServicesSold"],
+      "buybacks": ["PaymentsForRepurchaseOfCommonStock"],
+      "dividends": ["PaymentsOfDividendsCommonStock", "PaymentsOfDividends"],
+      "debt_proceeds": ["ProceedsFromIssuanceOfLongTermDebt", "ProceedsFromIssuanceOfSeniorLongTermDebt", "ProceedsFromDebtNetOfIssuanceCosts", "ProceedsFromIssuanceOfDebt"],
+      "debt_repayments": ["RepaymentsOfLongTermDebt", "RepaymentsOfDebt", "RepaymentsOfSeniorDebt"],
+      "cp_net": ["ProceedsFromRepaymentsOfCommercialPaper", "ProceedsFromRepaymentsOfShortTermDebt"]
+    },
+    "instant": {
+      "debt_lt": ["LongTermDebt"],
+      "debt_lt_noncurrent": ["LongTermDebtNoncurrent"],
+      "debt_lt_current": ["LongTermDebtCurrent"],
+      "commercial_paper": ["CommercialPaper"],
+      "short_term_borrowings": ["ShortTermBorrowings"],
+      "inventory": ["InventoryNet"],
+      "receivables": ["AccountsReceivableNetCurrent"]
+    }
+  },
+
+  "segments": {
+    "max_filings": 14,
+    "revenue_concepts": ["RevenueFromContractWithCustomerExcludingAssessedTax", "Revenues"],
+    "benign_members": ["OperatingSegmentsMember", "ReportableSegmentsMember"],
+    "discovery_terms": ["Cloud", "WebServices", "DataCenter", "AWS"]
+  },
+
+  "market": {
+    "benchmark": "QQQ",
+    "window_short": 63,
+    "window_long": 126
+  },
+
+  "alerts": {
+    "lookback_days": 180,
+    "queries": [
+      "\"useful lives\" \"change in accounting estimate\"",
+      "\"change in the estimated useful\" servers"
+    ]
+  },
+
+  "thresholds": {
+    "capex_ocf":      {"watch": 0.85, "stress": 1.00},
+    "debt_share":     {"watch": 0.10, "stress": 0.25},
+    "canary_rel_63d": {"watch": -0.15, "stress": -0.25},
+    "cloud_gap_quarters": {"watch": 3}
+  }
+}
