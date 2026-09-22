@@ -1,0 +1,45 @@
+name: Update monitor
+
+on:
+  schedule:
+    - cron: "30 12 * * 1,4"   # Mondays and Thursdays, 12:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-monitor
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Offline tests (stop here if any fail)
+        run: python -m pytest -q tests
+
+      - name: Run pipeline
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python pipeline.py
+
+      - name: Commit data and run log
+        if: always()
+        run: |
+          git config user.name "capex-monitor-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A docs
+          git diff --cached --quiet || git commit -m "Monitor update $(date -u +%F)"
+          git push
