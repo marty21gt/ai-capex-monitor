@@ -41,5 +41,15 @@ jobs:
           git config user.name "capex-monitor-bot"
           git config user.email "actions@users.noreply.github.com"
           git add -A docs
-          git diff --cached --quiet || git commit -m "Monitor update $(date -u +%F)"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Monitor update $(date -u +%F)"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "Push attempt $attempt failed; retrying in 10s."
+            sleep 10
+          done
+          echo "Could not push after 3 attempts."
+          exit 1
