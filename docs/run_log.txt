@@ -1,23 +1,29 @@
-2026-09-22 15:30:24Z INFO  run start; previous publish none
-2026-09-22 15:30:24Z INFO  MSFT: 'MICROSOFT CORPORATION', 14 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['Depreciation']
-2026-09-22 15:30:25Z INFO  GOOGL: 'Alphabet Inc.', 13 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['Depreciation']
-2026-09-22 15:30:25Z INFO  AMZN: 'AMAZON COM INC', 13 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquireProductiveAssets'], D&A via ['DepreciationDepletionAndAmortization']
-2026-09-22 15:30:25Z INFO  META: 'Meta Platforms, Inc.', 10 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['DepreciationDepletionAndAmortization']
-2026-09-22 15:30:25Z INFO  ORCL: 'Oracle Corporation', 9 metrics, latest quarter 2026Q3, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['Depreciation']
-2026-09-22 15:30:25Z WARN  ORCL.revenue reconciliation 2018Q2: {'quarter': '2018Q2', 'direct': 39383000000.0, 'derived': 10804000000.0, 'concept': 'Revenues', 'ticker': 'ORCL', 'metric': 'revenue'}
-2026-09-22 15:30:25Z INFO  CRWV: 'CoreWeave, Inc.', 11 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['DepreciationDepletionAndAmortization']
-2026-09-22 15:30:25Z WARN  CRWV.dna reconciliation 2025Q3: {'quarter': '2025Q3', 'direct': 621000000.0, 'derived': 604000000.0, 'concept': 'Depreciation', 'ticker': 'CRWV', 'metric': 'dna'}
-2026-09-22 15:30:25Z INFO  NVDA: 'NVIDIA CORP', 12 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment', 'PaymentsToAcquireProductiveAssets'], D&A via ['DepreciationDepletionAndAmortization', 'DepreciationAndAmortization']
-2026-09-22 15:30:25Z WARN  NVDA.dna reconciliation 2018Q2: {'quarter': '2018Q2', 'direct': 58000000.0, 'derived': 59000000.0, 'concept': 'DepreciationAndAmortization', 'ticker': 'NVDA', 'metric': 'dna'}
-2026-09-22 15:30:30Z INFO  MSFT segment members seen: IntelligentCloudMember(46), ServerProductsAndCloudServicesMember(46), MicrosoftCloudMember(46), DynamicsProductsAndCloudServicesMember(37), MicrosoftThreeSixFiveCommercialProductsAndCloudServicesMember(26), MicrosoftThreeSixFiveConsumerProductsAndCloudServicesMember(26), OfficeProductsAndCloudServicesMember(20)
-2026-09-22 15:30:30Z INFO  MSFT segment revenue: 18 quarters, latest 2026Q2
-2026-09-22 15:30:32Z INFO  GOOGL segment members seen: GoogleCloudMember(86)
-2026-09-22 15:30:32Z INFO  GOOGL segment revenue: 17 quarters, latest 2026Q2
-2026-09-22 15:30:34Z INFO  AMZN segment members seen: AmazonWebServicesSegmentMember(45), AmazonWebServicesMember(45)
-2026-09-22 15:30:34Z INFO  AMZN segment revenue: 18 quarters, latest 2026Q2
-2026-09-22 15:30:38Z INFO  NVDA segment members seen: DataCenterMember(45), AICloudsIndustrialEnterpriseMember(6)
-2026-09-22 15:30:38Z INFO  NVDA segment revenue: 18 quarters, latest 2026Q2
-2026-09-22 15:30:39Z INFO  market ORCL vs QQQ: 63d -0.12594505468270423, drawdown -0.627
-2026-09-22 15:30:39Z INFO  market CRWV vs QQQ: 63d -0.2212453206998053, drawdown -0.513
-2026-09-22 15:30:56Z INFO  alerts: 0 matching filings in last 180 days
-2026-09-22 15:30:56Z INFO  published: status elevated, latest quarter 2026Q2, 0 non-core failures, 0 restatements, 3 reconciliation issues
+2026-09-24 17:30:25Z INFO  run start; previous publish 2026-09-22T15:30:56+00:00
+2026-09-24 17:30:25Z INFO  MSFT: 'MICROSOFT CORPORATION', 15 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['Depreciation']
+2026-09-24 17:30:25Z INFO  MSFT: buybacks via ['PaymentsForRepurchaseOfCommonStock'], dividends via ['PaymentsOfDividendsCommonStock'], debt proceeds via None, repayments via None, CP/short-term net via None
+2026-09-24 17:30:26Z INFO  GOOGL: 'Alphabet Inc.', 16 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['Depreciation']
+2026-09-24 17:30:26Z INFO  GOOGL: buybacks via ['PaymentsForRepurchaseOfCommonStock'], dividends via ['PaymentsOfDividends'], debt proceeds via ['ProceedsFromDebtNetOfIssuanceCosts'], repayments via None, CP/short-term net via None
+2026-09-24 17:30:26Z INFO  AMZN: 'AMAZON COM INC', 16 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquireProductiveAssets'], D&A via ['DepreciationDepletionAndAmortization']
+2026-09-24 17:30:26Z INFO  AMZN: buybacks via ['PaymentsForRepurchaseOfCommonStock'], dividends via None, debt proceeds via ['ProceedsFromIssuanceOfLongTermDebt'], repayments via ['RepaymentsOfLongTermDebt'], CP/short-term net via None
+2026-09-24 17:30:26Z INFO  META: 'Meta Platforms, Inc.', 13 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['DepreciationDepletionAndAmortization']
+2026-09-24 17:30:26Z INFO  META: buybacks via ['PaymentsForRepurchaseOfCommonStock'], dividends via ['PaymentsOfDividendsCommonStock', 'PaymentsOfDividends'], debt proceeds via ['ProceedsFromIssuanceOfLongTermDebt'], repayments via None, CP/short-term net via None
+2026-09-24 17:30:26Z INFO  ORCL: 'Oracle Corporation', 14 metrics, latest quarter 2026Q3, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['Depreciation']
+2026-09-24 17:30:26Z INFO  ORCL: buybacks via ['PaymentsForRepurchaseOfCommonStock'], dividends via ['PaymentsOfDividendsCommonStock'], debt proceeds via ['ProceedsFromIssuanceOfLongTermDebt', 'ProceedsFromIssuanceOfSeniorLongTermDebt', 'ProceedsFromDebtNetOfIssuanceCosts'], repayments via ['RepaymentsOfDebt'], CP/short-term net via ['ProceedsFromRepaymentsOfCommercialPaper']
+2026-09-24 17:30:26Z INFO  CRWV: 'CoreWeave, Inc.', 13 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment'], D&A via ['DepreciationDepletionAndAmortization']
+2026-09-24 17:30:26Z INFO  CRWV: buybacks via None, dividends via None, debt proceeds via ['ProceedsFromIssuanceOfLongTermDebt'], repayments via ['RepaymentsOfLongTermDebt'], CP/short-term net via None
+2026-09-24 17:30:26Z WARN  CRWV.dna reconciliation 2025Q3: {'quarter': '2025Q3', 'direct': 621000000.0, 'derived': 604000000.0, 'concept': 'Depreciation', 'ticker': 'CRWV', 'metric': 'dna'}
+2026-09-24 17:30:26Z INFO  NVDA: 'NVIDIA CORP', 16 metrics, latest quarter 2026Q2, capex via ['PaymentsToAcquirePropertyPlantAndEquipment', 'PaymentsToAcquireProductiveAssets'], D&A via ['DepreciationDepletionAndAmortization', 'DepreciationAndAmortization']
+2026-09-24 17:30:26Z INFO  NVDA: buybacks via ['PaymentsForRepurchaseOfCommonStock'], dividends via ['PaymentsOfDividends'], debt proceeds via ['ProceedsFromDebtNetOfIssuanceCosts'], repayments via ['RepaymentsOfDebt'], CP/short-term net via None
+2026-09-24 17:30:26Z WARN  NVDA.dividends reconciliation 2023Q3: {'quarter': '2023Q3', 'direct': 99000000.0, 'derived': 97000000.0, 'concept': 'PaymentsOfDividends', 'ticker': 'NVDA', 'metric': 'dividends'}
+2026-09-24 17:30:29Z INFO  MSFT segment members seen: IntelligentCloudMember(46), ServerProductsAndCloudServicesMember(46), MicrosoftCloudMember(46), DynamicsProductsAndCloudServicesMember(37), MicrosoftThreeSixFiveCommercialProductsAndCloudServicesMember(26), MicrosoftThreeSixFiveConsumerProductsAndCloudServicesMember(26), OfficeProductsAndCloudServicesMember(20)
+2026-09-24 17:30:29Z INFO  MSFT segment revenue: 18 quarters, latest 2026Q2
+2026-09-24 17:30:31Z INFO  GOOGL segment members seen: GoogleCloudMember(86)
+2026-09-24 17:30:31Z INFO  GOOGL segment revenue: 17 quarters, latest 2026Q2
+2026-09-24 17:30:33Z INFO  AMZN segment members seen: AmazonWebServicesSegmentMember(45), AmazonWebServicesMember(45)
+2026-09-24 17:30:33Z INFO  AMZN segment revenue: 18 quarters, latest 2026Q2
+2026-09-24 17:30:35Z INFO  NVDA segment members seen: DataCenterMember(45), AICloudsIndustrialEnterpriseMember(6)
+2026-09-24 17:30:35Z INFO  NVDA segment revenue: 18 quarters, latest 2026Q2
+2026-09-24 17:30:37Z INFO  market ORCL vs QQQ: 63d -0.118057040176341, drawdown -0.639
+2026-09-24 17:30:37Z INFO  market CRWV vs QQQ: 63d -0.11504835386656553, drawdown -0.485
+2026-09-24 17:30:46Z INFO  alerts: 0 matching filings in last 180 days
+2026-09-24 17:30:46Z INFO  published: status normal, latest quarter 2026Q2, 0 non-core failures, 0 restatements, 2 reconciliation issues
