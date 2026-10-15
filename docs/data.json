@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-10-12T21:23:12+00:00",
+ "generated_utc": "2026-10-15T17:17:51+00:00",
  "status": "normal",
  "latest_quarter": "2026Q2",
  "signals": [
@@ -107,9 +107,9 @@
    "key": "canary_market",
    "name": "Debt-funded builders vs. the market",
    "reads": "Markets price funding stress at the levered edge before filings show it.",
-   "reading_text": "-3% CRWV",
+   "reading_text": "-13% CRWV",
    "state": "clear",
-   "detail": "Worst 63-day relative return. ORCL +4% vs. QQQ, -64% from relative high; CRWV -3% vs. QQQ, -55% from relative high. Prices as of 2026-10-12",
+   "detail": "Worst 63-day relative return. ORCL +2% vs. QQQ, -64% from relative high; CRWV -13% vs. QQQ, -61% from relative high. Prices as of 2026-10-15",
    "chart": {
     "labels": [
      "2025-03-28",
@@ -277,7 +277,7 @@
      136.97,
      139.19,
      127.2,
-     125.25
+     107.34
     ]
    },
    "threshold": null,
@@ -1078,13 +1078,13 @@
  },
  "alerts": [],
  "markets": {
-  "as_of": "2026-10-12",
+  "as_of": "2026-10-15",
   "canaries": {
    "ORCL": {
-    "days": 751,
-    "rel_short": 0.0386832037109317,
-    "rel_long": -0.26570686135278077,
-    "rel_drawdown": -0.643935058621045,
+    "days": 753,
+    "rel_short": 0.01704531848543578,
+    "rel_long": -0.3344019209098368,
+    "rel_drawdown": -0.643453673017287,
     "weekly": {
      "dates": [
       "2024-10-25",
@@ -1296,15 +1296,15 @@
       53.06,
       54.7,
       54.44,
-      53.26
+      53.34
      ]
     }
    },
    "CRWV": {
-    "days": 387,
-    "rel_short": -0.032466359404963785,
-    "rel_long": -0.39895085142826325,
-    "rel_drawdown": -0.5467342659562975,
+    "days": 390,
+    "rel_short": -0.12518126494391124,
+    "rel_long": -0.5071288614412215,
+    "rel_drawdown": -0.6115227035130874,
     "weekly": {
      "dates": [
       "2025-03-28",
@@ -1472,7 +1472,7 @@
       136.97,
       139.19,
       127.2,
-      125.25
+      107.34
      ]
     }
    }
