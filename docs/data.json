@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-09T22:39:50+00:00",
+ "generated_utc": "2026-11-12T20:20:16+00:00",
  "status": "elevated",
  "latest_quarter": "2026Q3",
  "signals": [
@@ -10,7 +10,7 @@
    "reads": "Above 100%, the buildout needs outside money to continue.",
    "reading_text": "91%",
    "state": "watch",
-   "detail": "Core hyperscalers, trailing 12 months, rising vs. two quarters ago. Including buybacks and dividends: 100% of operating cash flow (past the self-funded line). The status rule uses capex alone. Canaries: ORCL 1.61x (2026Q3); CRWV 2.98x (2026Q2)",
+   "detail": "Core hyperscalers, trailing 12 months, rising vs. two quarters ago. Including buybacks and dividends: 100% of operating cash flow (past the self-funded line). The status rule uses capex alone. Canaries: ORCL 1.61x (2026Q3); CRWV 3.84x (2026Q3)",
    "table": {
     "caption": "Trailing 12 months to 2026Q3",
     "columns": [
@@ -109,7 +109,7 @@
    "reads": "Markets price funding stress at the levered edge before filings show it.",
    "reading_text": "-43% CRWV",
    "state": "stress",
-   "detail": "Worst 63-day relative return. ORCL -13% vs. QQQ, -55% from relative high; CRWV -43% vs. QQQ, -64% from relative high. Prices as of 2026-11-09",
+   "detail": "Worst 63-day relative return. ORCL -10% vs. QQQ, -51% from relative high; CRWV -43% vs. QQQ, -59% from relative high. Prices as of 2026-11-12",
    "chart": {
     "labels": [
      "2025-03-28",
@@ -285,7 +285,7 @@
      89.64,
      92.51,
      82.33,
-     83.94
+     95.05
     ]
    },
    "threshold": null,
@@ -751,7 +751,7 @@
   "AMZN": "2026Q3",
   "META": "2026Q3",
   "ORCL": "2026Q3",
-  "CRWV": "2026Q2",
+  "CRWV": "2026Q3",
   "NVDA": "2026Q2"
  },
  "failures": [],
@@ -768,6 +768,20 @@
    "quarter": "2025Q3",
    "published": 11904000000.0,
    "latest_filing": 11504000000.0,
+   "applied": false
+  },
+  {
+   "series": "CRWV.debt_proceeds",
+   "quarter": "2025Q4",
+   "published": 4266314000.0,
+   "latest_filing": 4312000000.0,
+   "applied": false
+  },
+  {
+   "series": "CRWV.debt_proceeds",
+   "quarter": "2025Q3",
+   "published": 3166686000.0,
+   "latest_filing": 3121000000.0,
    "applied": false
   }
  ],
@@ -1104,13 +1118,13 @@
  },
  "alerts": [],
  "markets": {
-  "as_of": "2026-11-09",
+  "as_of": "2026-11-12",
   "canaries": {
    "ORCL": {
-    "days": 751,
-    "rel_short": -0.12688542913964684,
-    "rel_long": -0.34787331665988275,
-    "rel_drawdown": -0.5467497489053994,
+    "days": 753,
+    "rel_short": -0.10362208796588945,
+    "rel_long": -0.3192738928041845,
+    "rel_drawdown": -0.5061844796195176,
     "weekly": {
      "dates": [
       "2024-11-22",
@@ -1322,15 +1336,15 @@
       47.73,
       50.43,
       47.16,
-      46.99
+      49.06
      ]
     }
    },
    "CRWV": {
-    "days": 407,
-    "rel_short": -0.4270911494944257,
-    "rel_long": -0.5525973083521865,
-    "rel_drawdown": -0.6372182122516938,
+    "days": 410,
+    "rel_short": -0.4335214121564216,
+    "rel_long": -0.48655543465983575,
+    "rel_drawdown": -0.5891715868382772,
     "weekly": {
      "dates": [
       "2025-03-28",
@@ -1506,7 +1520,7 @@
       89.64,
       92.51,
       82.33,
-      83.94
+      95.05
      ]
     }
    }
@@ -3786,7 +3800,8 @@
     "2025Q4": 1571904000.0,
     "2026Q1": 2078000000.0,
     "2024Q3": 583941000.0,
-    "2024Q2": 395371000.0
+    "2024Q2": 395371000.0,
+    "2026Q3": 3661000000.0
    },
    "ocf": {
     "2024Q4": 186564000.0,
@@ -3798,7 +3813,8 @@
     "2025Q4": 1558949000.0,
     "2026Q1": 2984000000.0,
     "2024Q3": 641222000.0,
-    "2024Q2": -117824000.0
+    "2024Q2": -117824000.0,
+    "2026Q3": 1975000000.0
    },
    "capex": {
     "2024Q4": 3497749000.0,
@@ -3810,13 +3826,17 @@
     "2025Q4": 4059761000.0,
     "2026Q1": 7695000000.0,
     "2024Q3": 1215155000.0,
-    "2024Q2": 2247161000.0
+    "2024Q2": 2247161000.0,
+    "2026Q3": 9441000000.0
    },
    "finance_lease_principal": {
     "2026Q1": 15000000.0,
     "2025Q1": 14000000.0,
     "2026Q2": 18000000.0,
-    "2025Q2": 14000000.0
+    "2025Q2": 14000000.0,
+    "2025Q4": 15000000.0,
+    "2026Q3": 4000000.0,
+    "2025Q3": 15000000.0
    },
    "dna": {
     "2024Q4": 365006000.0,
@@ -3828,7 +3848,8 @@
     "2025Q4": 820543000.0,
     "2026Q1": 1147000000.0,
     "2024Q3": 254024000.0,
-    "2024Q2": 164460000.0
+    "2024Q2": 164460000.0,
+    "2026Q3": 1889000000.0
    },
    "cogs": {
     "2024Q4": 181808000.0,
@@ -3840,7 +3861,8 @@
     "2025Q4": 509115000.0,
     "2026Q1": 716000000.0,
     "2024Q3": 143134000.0,
-    "2024Q2": 108838000.0
+    "2024Q2": 108838000.0,
+    "2026Q3": 1183000000.0
    },
    "debt_lt": {
     "2024Q4": 7926000000.0,
@@ -3873,7 +3895,8 @@
     "2025Q3": 1659229000.0,
     "2025Q4": 3169000000.0,
     "2026Q1": 2120000000.0,
-    "2026Q2": 2541000000.0
+    "2026Q2": 2541000000.0,
+    "2026Q3": 4280000000.0
    },
    "total_debt": {
     "2024Q4": 7926000000.0,
@@ -3893,7 +3916,8 @@
     "2026Q2": 13457000000.0,
     "2024Q1": 931647000.0,
     "2025Q3": 3166686000.0,
-    "2024Q4": 3688879000.0
+    "2024Q4": 3688879000.0,
+    "2026Q3": 10301000000.0
    },
    "debt_repayments": {
     "2025Q4": 420150000.0,
@@ -3905,7 +3929,8 @@
     "2026Q2": 3884000000.0,
     "2024Q1": 4956000.0,
     "2025Q3": 1403850000.0,
-    "2024Q4": 224873000.0
+    "2024Q4": 224873000.0,
+    "2026Q3": 2344000000.0
    }
   },
   "NVDA": {
