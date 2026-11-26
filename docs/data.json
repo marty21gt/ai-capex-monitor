@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-11-24T00:15:53+00:00",
+ "generated_utc": "2026-11-26T21:51:24+00:00",
  "status": "elevated",
  "latest_quarter": "2026Q3",
  "signals": [
@@ -107,9 +107,9 @@
    "key": "canary_market",
    "name": "Debt-funded builders vs. the market",
    "reads": "Markets price funding stress at the levered edge before filings show it.",
-   "reading_text": "-40% CRWV",
+   "reading_text": "-44% CRWV",
    "state": "stress",
-   "detail": "Worst 63-day relative return. ORCL -14% vs. QQQ, -50% from relative high; CRWV -40% vs. QQQ, -63% from relative high. Prices as of 2026-11-23",
+   "detail": "Worst 63-day relative return. ORCL -22% vs. QQQ, -53% from relative high; CRWV -44% vs. QQQ, -66% from relative high. Prices as of 2026-11-25",
    "chart": {
     "labels": [
      "2025-03-28",
@@ -289,7 +289,7 @@
      82.33,
      90.98,
      75.6,
-     86.43
+     78.18
     ]
    },
    "threshold": null,
@@ -762,23 +762,16 @@
  "restatements": [
   {
    "series": "GOOGL.buybacks",
-   "quarter": "2025Q3",
-   "published": 11904000000.0,
-   "latest_filing": 11504000000.0,
-   "applied": false
-  },
-  {
-   "series": "GOOGL.buybacks",
    "quarter": "2025Q4",
    "published": 5499000000.0,
    "latest_filing": 5899000000.0,
    "applied": false
   },
   {
-   "series": "CRWV.debt_proceeds",
-   "quarter": "2025Q4",
-   "published": 4266314000.0,
-   "latest_filing": 4312000000.0,
+   "series": "GOOGL.buybacks",
+   "quarter": "2025Q3",
+   "published": 11904000000.0,
+   "latest_filing": 11504000000.0,
    "applied": false
   },
   {
@@ -786,6 +779,13 @@
    "quarter": "2025Q3",
    "published": 3166686000.0,
    "latest_filing": 3121000000.0,
+   "applied": false
+  },
+  {
+   "series": "CRWV.debt_proceeds",
+   "quarter": "2025Q4",
+   "published": 4266314000.0,
+   "latest_filing": 4312000000.0,
    "applied": false
   }
  ],
@@ -1122,13 +1122,13 @@
  },
  "alerts": [],
  "markets": {
-  "as_of": "2026-11-23",
+  "as_of": "2026-11-25",
   "canaries": {
    "ORCL": {
-    "days": 752,
-    "rel_short": -0.14042463323935328,
-    "rel_long": -0.3361615413064579,
-    "rel_drawdown": -0.5043386371011984,
+    "days": 753,
+    "rel_short": -0.22022200174252804,
+    "rel_long": -0.405264866899937,
+    "rel_drawdown": -0.5348504779464296,
     "weekly": {
      "dates": [
       "2024-12-06",
@@ -1340,15 +1340,15 @@
       49.24,
       51.31,
       46.28,
-      48.59
+      45.6
      ]
     }
    },
    "CRWV": {
-    "days": 417,
-    "rel_short": -0.401337621331043,
-    "rel_long": -0.4891176085090826,
-    "rel_drawdown": -0.6264609117552098,
+    "days": 419,
+    "rel_short": -0.44269643717558493,
+    "rel_long": -0.5387253436349231,
+    "rel_drawdown": -0.662104341769715,
     "weekly": {
      "dates": [
       "2025-03-28",
@@ -1528,7 +1528,7 @@
       82.33,
       90.98,
       75.6,
-      86.43
+      78.18
      ]
     }
    }
